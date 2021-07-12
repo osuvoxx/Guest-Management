@@ -1,0 +1,54 @@
+<%= form_for @guestfind do |form| %>
+    <% if visitor.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(visitor.errors.count, "error") %> prohibited this visitor from being saved:</h2>
+  
+        <ul>
+          <% visitor.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
+  
+    <div class="field">
+      <%= form.label :phone %>
+      <%= form.text_field :phone %>
+    </div>
+  
+    <div class="field">
+      <%= form.label :address %>
+      <%= form.text_field :address %>
+    </div>
+  
+    <div class="field">
+      <%= form.label :email %>
+      <%= form.text_field :email %>
+    </div>
+  
+    <div class="field">
+    
+      <%= form.fields_for  :mettings , @guestnew.mettings do |builder| %>
+      
+        <%= builder.label :purpose %>
+        <%= builder.text_field :purpose ,class:"form-control" ,placeholder:"purpose"%>
+        <%= builder.label :status %>
+        <%= builder.text_field :status ,class:"form-control" ,placeholder:"status"%>
+        <%= builder.label :user_id %>
+        <%= builder.text_field :user_id ,class:"form-control" ,placeholder:"User"%>
+           
+      <% end %>
+  
+    </div>
+  
+    <div class="actions">
+      <%= form.submit "ADD and Next"%>
+    </div>
+    
+  <% end %>
+  

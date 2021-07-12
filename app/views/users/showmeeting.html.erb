@@ -1,0 +1,30 @@
+<% @usermeet.each do |meet| %>
+    <strong>Purpose:</strong>
+    <%= meet.purpose %>
+    <br>
+
+    Status:
+    <% if meet.status =="0" %>
+    Ongoing
+    <% elsif meet.status =="1" %>
+    Complete
+    <% elsif meet.status =="2" %>
+    Rescheduled
+    <% end %>
+    <br>
+
+    <strong>Guest Name:</strong><%= meet.guest.name %>
+
+    <%= form_for meet do |form| %>
+      <div class="field">
+        <%= form.label :status %>
+        <%= form.text_field :status %>
+      </div>
+      <div class="actions">
+        <%= form.submit %>
+      </div>  
+    <% end %>
+
+    <hr>
+    
+  <% end %>

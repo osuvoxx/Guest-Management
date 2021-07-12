@@ -1,0 +1,36 @@
+
+
+<div class="container">
+<table class="table">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Purpose</th>
+      <th>Status</th>
+      <th>Guest</th>
+      <th>Employee</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @mettingall.each do |metting| %>
+      <tr>
+      <td><%= metting.id %></td>
+        <td><%= metting.purpose %></td>
+        <td> 
+            <% if metting.status =="0" %>
+            Ongoing
+            <% elsif metting.status =="1" %>
+            Complete
+            <% elsif metting.status =="2" %>
+            Rescheduled
+            <% end %>
+            =<%= metting.status %> 
+        </td>
+        <td><%= metting.guest_id %></td>
+        <td><%= metting.user_id %></td>
+       </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
