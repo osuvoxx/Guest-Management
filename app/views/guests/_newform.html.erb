@@ -13,36 +13,39 @@
   
     <div class="field">
       <%= form.label :name %>
-      <%= form.text_field :name %>
+      <%= form.text_field :name ,class:"form-control"%>
     </div>
   
     <div class="field">
       <%= form.label :phone %>
-      <%= form.text_field :phone %>
+      <%= form.text_field :phone,class:"form-control" %>
     </div>
   
     <div class="field">
       <%= form.label :address %>
-      <%= form.text_field :address %>
+      <%= form.text_field :address ,class:"form-control"%>
     </div>
   
     <div class="field">
       <%= form.label :email %>
-      <%= form.text_field :email %>
+      <%= form.text_field :email,class:"form-control" %>
     </div>
   
      <div class="field">
        <%= form.fields_for  :mettings do |builder| %>
+        
          <%= builder.label :purpose %>
-         <%= builder.text_field :purpose ,class:"form-control" ,placeholder:"purpose"%>
-         <%= builder.label :status %>
-        <%= builder.text_field :status ,class:"form-control" ,placeholder:"status",value: "0" %>
-        <%= builder.label :user_id %>
-        <%= builder.text_field :user_id ,class:"form-control" ,placeholder:"User"%>
+         <%= builder.text_area :purpose ,class:"form-control" %>
+
+        <%= builder.text_field :status ,class:"form-control" ,value: "0",hidden:"true" %>
+        <br>
+        <%= builder.label :user_id ,"Employee",class:"mr-2"%> : 
+        <% options = options_from_collection_for_select(User.all, 'id', 'name',class:"form-control")%>
+        <%= builder.select :user_id,  options %>
        <% end %>
      </div>
   
-    <div class="actions">
+    <div class="actions text-center">
       <%= form.submit "SEND"%>
     </div>
   <% end %>

@@ -1,30 +1,46 @@
-<% @usermeet.each do |meet| %>
-    <strong>Purpose:</strong>
-    <%= meet.purpose %>
-    <br>
+<div class="container">
 
-    Status:
-    <% if meet.status =="0" %>
-    Ongoing
-    <% elsif meet.status =="1" %>
-    Complete
-    <% elsif meet.status =="2" %>
-    Rescheduled
-    <% end %>
-    <br>
+  <h1 class="bbottom py-1">Meetings</h1>
+  <% @usermeet.each do |meet| %>
 
-    <strong>Guest Name:</strong><%= meet.guest.name %>
-
-    <%= form_for meet do |form| %>
-      <div class="field">
-        <%= form.label :status %>
-        <%= form.text_field :status %>
+  <div class="container mt-3">
+    <div class="jumbotron jumbotron-fluid py-2 ">
+    <div class="container py-0">
+   
+      <h1 class="display-4"><%= meet.guest.name %></h1>
+      <p class="lead">
+      
+        <strong>Purpose:</strong>
+        <%= meet.purpose %>
+        <br>
+        Status:
+        <% if meet.status =="0" %>
+        Ongoing
+        <% elsif meet.status =="1" %>
+        Complete
+        <% elsif meet.status =="2" %>
+        Rejected
+        <% end %>
+        <br>  
+        <%= form_for meet do |form| %>
+          <!-- <div class="field">
+            <%= form.label :status %>
+            <%= form.text_field :status %>
+          </div>
+          <div class="actions">
+            <%= form.submit %>
+          </div>   -->
+          <div class="field">
+            <%= form.label :Actions %>:
+            <%= form.select(:status, options_for_select([['Accept','1'],['Reject','2'],['Reschedule','3']]), {:prompt => '--select--'},class:"form-control")%>
+          </div>
+          <br>
+          <%= form.submit "send" %>
+        <% end %>      
       </div>
-      <div class="actions">
-        <%= form.submit %>
-      </div>  
-    <% end %>
-
-    <hr>
-    
-  <% end %>
+    </p>
+  </div>
+</div>
+      <% end %>
+      
+</div>

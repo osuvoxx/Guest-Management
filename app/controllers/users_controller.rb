@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 
   def home 
     @user = User.find_by(id: session[:user_id])
+    @active = "home"
   end
   
   def index
@@ -13,10 +14,18 @@ class UsersController < ApplicationController
   end
 
   def showmeeting
+   @active = "show"
     @user = User.find_by(id: session[:user_id])   
-    @usermeet=@user.mettings.all      
+    @usermeet=@user.mettings.all 
+    # render json:{usermeet: @usermeet}
   end
-  
+
+  def ajaxshow
+    @user = User.find_by(id: session[:user_id])   
+    @usermeet=@user.mettings.all 
+    render json:{usermeet: @usermeet}
+  end
+
   def show
     @user = User.find_by(id: session[:user_id])
     @userindex= User.find_by(id: params[:id])

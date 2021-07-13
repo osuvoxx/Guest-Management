@@ -3,7 +3,7 @@ class MettingsController < ApplicationController
     before_action :set_metting, only: %i[ show edit update destroy ]
     def index
         @user = User.find_by(id: session[:user_id])
-        @mettingall = Metting.all
+        @mettingall = Metting.all.order("created_at DESC")
     end
 
     def new

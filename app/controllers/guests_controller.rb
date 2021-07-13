@@ -9,7 +9,7 @@ class GuestsController < ApplicationController
 
     def meeting 
         @user = User.find_by(id: session[:user_id])
-        
+        @active="meeting"
         @guest = Guest.where(params[search])
         @guestnew = Guest.new
         @guestnew.mettings.build
@@ -37,7 +37,7 @@ class GuestsController < ApplicationController
         @user = User.find_by(id: session[:user_id])
         @guestnew= Guest.create(guest_params)
         if @guestnew.save
-            redirect_to meeting_guests_path
+            redirect_to mettings_path
         else
             render :new
         end
