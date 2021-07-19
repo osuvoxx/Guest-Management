@@ -83,15 +83,15 @@
                 <td><%= metting.user.name %></td>
                 <td>
                 <%= metting.reschedule.to_time.strftime('%B %e at %l:%M %p') %>
-                <% if metting.status== "3" || metting.status == "4" %>
+                <!-- <% if metting.status== "3" || metting.status == "4" %>
                     <% if metting.reschedule.to_time.strftime('%B %e at %l:%M %p') <= @date.to_time.strftime('%B %e at %l:%M %p') %> 
                     <span class="badge bg-success px-3 py-2">Approved</span>
                     <%  metting.status=1 %>
                     <% end %>
-                <% end %>
+                <% end %> -->
                 </td>
                 <td> 
-                  <%=  metting.status %>
+                 
                     <% if metting.status =="0" %>
                     <span class="badge bg-primary px-3 py-2">Awating Aprooval</span>
                     <% elsif metting.status =="1" %>

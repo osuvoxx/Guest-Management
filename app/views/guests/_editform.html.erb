@@ -63,7 +63,7 @@
     </div> 
     <% else %> 
       <br>    
-        <h5> Rescheduled at: <%= @check.reschedule.to_time.strftime('%B %e at %l:%M %p') %> With <%= @check.user.name %> </h5>
+        <h5> Prescheduled at: <%= @check.reschedule.to_time.strftime('%B %e at %l:%M %p') %> With <%= @check.user.name %> </h5>
       <br> 
     <% end %>
 <% end %>
