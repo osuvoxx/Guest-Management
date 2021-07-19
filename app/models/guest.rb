@@ -11,4 +11,6 @@ class Guest < ApplicationRecord
 
     has_many :mettings
     accepts_nested_attributes_for :mettings 
+    validates :phone,uniqueness: true
+    
 end

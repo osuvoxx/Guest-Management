@@ -1,44 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+ 
+  <div class="container ">
+      <div style="width:100%;height:55px" class="bbottom">
+        <div><h1>All Meetings
+          <% if @user.role.id == 1 || @user.role.id == 2 %>
+            <span style="font-size:16px;">
+              <ul class="navbar-nav float-right">
+               <div class="dropdown" style="float:right;">
+                <a class="btn mr-5 " href="#" role="button" id="notificationadmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class=" fa fa-bell fa-2x"></i><span class=" p-1" ><span class="badge badge-danger" style="font-size:15px;"id="count2"></span>
+                </a>
+                <div class="dropdown-content" id="shownotification2" >
+                  <a href="#">No New Notification</a>
+                </div>
+              </div>
+              </ul>
+            </span>
+            </h1></div>
+            <% else %>
+            <span style="font-size:16px;">
+              <ul class="navbar-nav float-right">
+               <div class="dropdown" style="float:right;">
+                <a class="btn mr-5 " href="#" role="button" id="notificationadmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class=" fa fa-bell fa-2x"></i><span class=" p-1" ><span class="badge badge-danger" style="font-size:15px;"id="count2"></span>
+                </a>
+                <div class="dropdown-content" id="shownotification2" >
+                  <a href="#">No New Notification</a>
+                </div>
+              </div>
+              </ul></span>
+            </h1>
+    
+          <% end %>
+        </div>
+      </div>
+          <div class="container mt-2">
+            <% if flash[:notice] %>
+              <div class="text-center container">
+                  <div class="alert alert-warning alert-dismissible" role="alert">
+                      <strong><%=flash[:notice] %></strong>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+            <% end %>
+       
+          
 
+  <div class="container float-right">
+  <table class="table my-3 table-responsive  table-striped table-dark table-bordered " id="" >
+    <thead class="bg-success text-center ">
+      <tr id="table">
+        <th>GUEST</th>   
+        <th>PURPOSE</th>
+        <th>EMPLOYEE</th>
+        <th class="col-md-1">TIME</th>
+        <th>STATUS</th>
+        <th class="col-md-2">Reason</th>
+        <% if @user.role.id == 3 %>
+        <th>CLOSE</th>
+        <% end %>
+      </tr>
+    </thead>
 
-<div class="container">
-
-
-    <div style="height:55px" class="bbottom mb-3">
-      <h1 >
-       All Meeting 
-      </h1>
-    </div>
-
-<div class="container">
-<table class="table table-dark my-3 ">
-  <thead class="bg-success">
-    <tr>
-      <th>Guest</th>
-      <th>Purpose</th>
-      <th>Employee</th>
-      <th>Status</th>
-     
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @mettingall.each do |metting| %>
-      <tr>
-        <td><%= metting.guest.name %></td>
+    <tbody class="text-center">
+      <% @mettingall.each do |metting| %>
+        <% if @user.role.id == 3 %>
+          <% if metting.status =="0" || metting.status =="1" || metting.status =="2" || metting.status =="3" || metting.status =="4"  %>
+            <tr>
+                <td><%= metting.guest.name %></td>
+                <td><%= metting.purpose %></td>
+                <td><%= metting.user.name %></td>
+                <td>
+                <%= metting.reschedule.to_time.strftime('%B %e at %l:%M %p') %>
+                <% if metting.status== "3" || metting.status == "4" %>
+                    <% if metting.reschedule.to_time.strftime('%B %e at %l:%M %p') <= @date.to_time.strftime('%B %e at %l:%M %p') %> 
+                    <span class="badge bg-success px-3 py-2">Approved</span>
+                    <%  metting.status=1 %>
+                    <% end %>
+                <% end %>
+                </td>
+                <td> 
+                  <%=  metting.status %>
+                    <% if metting.status =="0" %>
+                    <span class="badge bg-primary px-3 py-2">Awating Aprooval</span>
+                    <% elsif metting.status =="1" %>
+                    <span class="badge bg-success px-3 py-2">Complete</span>
+                    <% elsif metting.status =="2" %>
+                    <span class="badge bg-danger  px-3 py-2">Rejected</span>  
+                    <% elsif metting.status =="3" %>
+                    <span class="badge bg-warning px-3 py-2">Rescheduled</span> 
+                    <% elsif metting.status =="4" %>
+                    <span class="badge bg-secondary px-3 py-2">Prescheduled</span> 
+                    <% end %>
+                </td>
+                <td><%= metting.reason %></td>
+                <% if @user.role.id == 3 %>
+                  <td>
+                  <% if metting.status=="2" || metting.status=="1" || metting.status=="3" || metting.status=="4" %>
+                    <%= form_for metting do |form| %>
+                    <%= form.hidden_field:status ,value:"5"%>
+                    <%= form.submit "Close",class:"btn btn-danger px-1 py-1" %>
+                    <% end %>
+                  <% end %>
+                  </td>
+                <% end %>
+                </tr>
+          <% end %>
+        <% else %>
+        <tr>
+          <td><%= metting.guest.name %></td>
           <td><%= metting.purpose %></td>
           <td><%= metting.user.name %></td>
+          <td>
+          <%= metting.reschedule.to_time.strftime('%B %e at %l:%M %p') %>
+              <!-- <% if metting.reschedule.to_time.strftime('%B %e at %l:%M %p') < @date.to_time.strftime('%B %e at %l:%M %p') %> 
+                Hi
+              <% end %> -->
+          </td>
           <td> 
               <% if metting.status =="0" %>
-              <span class="badge bg-primary">Ongoing</span>
+              <span class="badge bg-primary px-3 py-2">Awating Aprooval</span>
               <% elsif metting.status =="1" %>
-              <span class="badge bg-success">Complete</span>
+              <span class="badge bg-success px-3 py-2">Complete</span>
               <% elsif metting.status =="2" %>
-              <span class="badge bg-danger">Rejected</span> <button id="close" class="btn btn-danger">Close</button>
+              <span class="badge bg-danger  px-3 py-2">Rejected</span>  
+              <% elsif metting.status =="3" %>
+              <span class="badge bg-warning px-3 py-2">Rescheduled</span> 
+              <% elsif metting.status =="4" %>
+              <span class="badge bg-secondary px-3 py-2">Prescheduled</span> 
+              <% elsif metting.status =="5" %>
+              <span class="badge bg-info px-3 py-2">Closed </span> 
               <% end %>
           </td>
-       </tr>
+          <td><%= metting.reason %></td>
+          <% if @user.role.id == 3 %>
+            <td>
+            <% if metting.status=="2" || metting.status=="1" || metting.status=="3" || metting.status=="4" %>
+              <%= form_for metting do |form| %>
+              <%= form.hidden_field:status ,value:"5"%>
+              <%= form.submit "Close",class:"btn btn-danger px-1 py-1" %>
+              <% end %>
+            <% end %>
+            </td>
+          <% end %>
+          </tr>
     <% end %>
-  </tbody>
-</table>
-</div>
-</div>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+ 
+
+<script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#tabledata').DataTable({
+       
+      });
+    });
+  </script>
+</body>
+</html>

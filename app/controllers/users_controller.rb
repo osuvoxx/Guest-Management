@@ -3,35 +3,46 @@ class UsersController < ApplicationController
   skip_before_action :require_login, only: [:new, :create]
 
   def home 
-    @user = User.find_by(id: session[:user_id])
-    @active = "home"
+    @user = User.find_by(id: session[:user_id]) 
+    @activeuser = User.find_by(id: session[:user_id]) 
+    @date=Time.now;
+    @active="home"
   end
   
   def index
     @userall =User.all
     @user = User.find_by(id: session[:user_id])   
     @role=Role.all
+    @active="index"
   end
 
   def showmeeting
    @active = "show"
     @user = User.find_by(id: session[:user_id])   
-    @usermeet=@user.mettings.all 
+    @usermeet=@user.mettings.all.where(status: "0").order("created_at DESC")
     # render json:{usermeet: @usermeet}
   end
 
   def ajaxshow
     @user = User.find_by(id: session[:user_id])   
-    @usermeet=@user.mettings.all 
+    @usermeet=@user.mettings.all
     render json:{usermeet: @usermeet}
+    
   end
 
+  # def notification
+  #   @mettingall = Metting.all
+  #   render json:{meet: @mettingall}
+  # end
+
   def show
+    @active="profile"
     @user = User.find_by(id: session[:user_id])
     @userindex= User.find_by(id: params[:id])
   end
 
   def new
+    @active="index"
     @user = User.find_by(id: session[:user_id])
     @usernew= User.new
   end
@@ -40,7 +51,8 @@ class UsersController < ApplicationController
     @usernew = User.create(user_params)
     respond_to do |format|
       if @usernew.save
-        format.html { redirect_to users_path, notice: "User was successfully created." }
+        format.html { redirect_to users_path }
+        flash[:notice] = "Employee Created Successfully"
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -50,14 +62,16 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find_by(id: params[:id])
+    @active="profile"
+    
   end
 
   def update
-    @user = User.find_by(id: params[:id])
+   
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to user_path(@user), notice: "User was successfully updated." }
+        flash[:notice] = "Employee Updated Successfully"
+        format.html { redirect_to user_path(@user) }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit, status: :unprocessable_entity }

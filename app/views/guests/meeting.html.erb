@@ -1,23 +1,41 @@
-    
-<style>
-.bbottom{
-  border-bottom:2px solid grey;
-}
-</style> 
-
 <div class="container">
-    <div style="width=100%;height:55px" class="bbottom mb-3">
-      <h1 >
-        Schedule Meeting 
-      </h1>
-</div>
+  <div style="width:100%;height:55px" class="bbottom">
+    <div><h1>Schedule Meeting<span style="font-size:16px;">
+      <% if @user.role.id == 1 || @user.role.id == 2 %>
+            <ul class="navbar-nav float-right">
+            <div class="dropdown" style="float:right;">
+            <a class="btn mr-5 " href="#" role="button" id="notificationadmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class=" fa fa-bell fa-2x"></i><span class=" p-1" ><span class="badge badge-danger" style="font-size:15px;"id="count1"></span>
+            </a>
+            <div class="dropdown-content" id="shownotification1" >
+              <a href="#">No New Notification</a>
+            </div>
+          </div>
+          </ul></span></h1>
+        <% else %>
+        <span style="font-size:16px;">
+          <ul class="navbar-nav float-right">
+           <div class="dropdown" style="float:right;">
+            <a class="btn mr-5 " href="#" role="button" id="notificationadmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class=" fa fa-bell fa-2x"></i><span class=" p-1" ><span class="badge badge-danger" style="font-size:15px;"id="count2"></span>
+            </a>
+            <div class="dropdown-content" id="shownotification2" >
+              <a href="#">No New Notification</a>
+            </div>
+          </div>
+          </ul></span>
+        </h1>
 
-<div class="container">
+      <% end %>
+    </div>
+  </div>
+
+<div class="container mt-5">
 <div class="jumbotron jumbotron-fluid py-4 px-3">
     <div class="container">
     <%= form_tag meeting_guests_path, :method => 'get' do %>
       <%= label_tag :Phone%>:
-      <%= text_field_tag :search,params[:search]%>
+      <%= text_field_tag :search,params[:search],required:"true",:minlength => 10,:maxlength => 10%>
       <%= submit_tag "search" %>
     <% end %> 
   <br>

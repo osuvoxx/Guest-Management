@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Dbrole</title>
+    <title>Guest-Management</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -18,7 +18,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>  
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <style>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+   <style>
       body{
         overflow-x:hidden;
       }
@@ -28,9 +29,41 @@
       .wid-80{
         min-width: 80%;
       }
-      .bbottom{
-    border-bottom:2px solid grey;
-  }
+          .bbottom{
+        border-bottom:2px solid grey;
+      }
+        .dropbtn {
+        background-color: #04AA6D;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f9f9f9;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown:hover .dropdown-content {display: block;}
+
     </style>
   </head>
 
@@ -53,29 +86,83 @@
     // console.log("hello");
     $.ajax({
       type: "get",
-      url: "ajaxshow",
+      url: "http://localhost:3000/users/ajaxshow",
       dataType: "json",
       success:function(usermeet){
-       var arr=[];
+       var arr;
        var count=0;
        console.log(usermeet);
        usermeet['usermeet'].forEach(user => {
          if (user['status'] == "0")
          {
-          arr=arr+'<a class="dropdown-item" href="/users/showmeeting">'+ user['guest_id']+ ' wants to meet</a>'    
+          // arr=arr+'<a class="dropdown-item" href="/users/showmeeting">'+ user['guest_id']+ ' wants to meet</a>'    
          
          count=count+1;
         }
+        arr= '<a class="dropdown-item" href="/users/showmeeting">You have a new meeting</a>';
        });                                                  
 
         console.log(count);
         if (count>0){
-       $('#count1').html(count);
+          $('#count1').html(count);    
+          $('#shownotification1').html(arr);
         }
-       $('#shownotification1').html(arr);
       }
     })
+    $.ajax({
+      type: "get",
+      url: " http://localhost:3000/mettings/notification",
+      dataType: "json",
+      success:function(meet){
+       var arr;
+       var arr1=[];
+       var arr2=[];
+       var arr3=[];
+       var arr4=[];
+       var count=0; 
+       var count1=0;
+       var count2=0;
+       var count3=0;
+       var count4=0;
+       console.log(meet);
+       meet['meet'].forEach(user => {
+        if (user['status'] == "1" ||user['status'] == "2" ||user['status'] == "3" ||user['status'] == "4"  )
+         {
+            if(user['status'] == "1"){
+                count1=count1+1;
+                arr1=arr1+'<a class="dropdown-item" href="/mettings">'+user['name']+' has Accepted'
+                  console.log(user['name']);
+            }
+            if(user['status'] == "2"){
+              arr2=arr2+'<a class="dropdown-item" href="/mettings">'+user['name']+' has Rejected'
+            }
+            if(user['status'] == "3"){
+                count3=count3+1;
+                arr3=arr3+'<a class="dropdown-item" href="/mettings">'+user['name']+' has Rescheduled'
+            }
+            if(user['status'] == "4"){
+                count4=count4+1;
+                arr4=arr4+'<a class="dropdown-item" href="/mettings">'+user['name']+' has Prescheduled'
+            
+            }
+            
+            count=count+1;
+          
+         }
+        //  arr1=['<a class="dropdown-item" href="/mettings">'+ count1+' Aceepted</a>','<a class="dropdown-item" href="/mettings"> '+count2+' Rejected</a>','<a class="dropdown-item" href="/mettings">'+ count3+' Rescheduled</a>'];
+        arr= '<a class="dropdown-item" href="/mettings">New Notification</a>';
+        
+       });                                                  
+
+        // console.log(count);
+        if (count>0){
+          $('#count2').html(count);    
+          $('#shownotification2').html(arr1+'\n'+arr2+"\n"+arr3+"\n"+arr4);
+        }
+      }
+    })
+    // document.getElementsById("count2").hide()
   }
-</script>
+  </script>
   </body>
 </html>

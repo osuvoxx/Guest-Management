@@ -19,6 +19,16 @@ class GuestsController < ApplicationController
 
     def search
         @guestfind = Guest.search(params[:search])
+        @count=0
+        if !@guestfind.nil?
+            @status=@guestfind.mettings.all
+            @status.each do |status| 
+                if status.status == "3" || status.status == "4" 
+                @count = @count + 1
+                @check= status
+                end 
+            end
+        end
     end
 
     def index
@@ -37,9 +47,10 @@ class GuestsController < ApplicationController
         @user = User.find_by(id: session[:user_id])
         @guestnew= Guest.create(guest_params)
         if @guestnew.save
-            redirect_to mettings_path
+            flash[:notice] = "Metting Scheduled Succesfully"
+            redirect_to meeting_guests_path
         else
-            render :new
+            redirect_to meeting_guests_path
         end
     end
 
@@ -48,9 +59,10 @@ class GuestsController < ApplicationController
 
         respond_to do |format|        
             if @guest.update(guest_params)
-                format.html { redirect_to guests_path, notice: "Meeting Scheduled." }
+                flash[:notice] = "Metting Scheduled Succesfully"
+                format.html { redirect_to meeting_guests_path}
             else
-                format.html { render :edit, status: :unprocessable_entity }
+                format.html { redirect_to meeting_guests_path, status: :unprocessable_entity }
             end
         end
     end
@@ -63,6 +75,6 @@ class GuestsController < ApplicationController
 
        
         def guest_params
-            params.require(:guest).permit(:name,:email,:phone,:address,mettings_attributes: [:id,:user_id,:purpose,:status])
+            params.require(:guest).permit(:name,:email,:phone,:address,mettings_attributes: [:id,:user_id,:purpose,:status,:reschedule])
         end
 end

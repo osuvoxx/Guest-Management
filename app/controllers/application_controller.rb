@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     def check_user_role
         @user = User.find_by(id: session[:user_id])
         @recep = @user.role
-        if @recep.id == 3
+        if @recep.id == 3 || @recep.id == 1 ||  @recep.id == 2
             
         else
             redirect_to home_users_path 

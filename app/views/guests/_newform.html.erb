@@ -13,40 +13,52 @@
   
     <div class="field">
       <%= form.label :name %>
-      <%= form.text_field :name ,class:"form-control"%>
+      <%= form.text_field :name ,class:"form-control",required:"true"%>
     </div>
   
     <div class="field">
       <%= form.label :phone %>
-      <%= form.text_field :phone,class:"form-control" %>
+      <%= form.text_field :phone,class:"form-control",required:"true" ,:maxlength => 10 ,:minlength => 10%>
     </div>
   
     <div class="field">
       <%= form.label :address %>
-      <%= form.text_field :address ,class:"form-control"%>
+      <%= form.text_field :address ,class:"form-control",required:"true"%>
     </div>
   
     <div class="field">
       <%= form.label :email %>
-      <%= form.text_field :email,class:"form-control" %>
+      <%= form.text_field :email,class:"form-control",required:"true",placeholder:"guest@email.com",pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" %>
     </div>
   
      <div class="field">
-       <%= form.fields_for  :mettings do |builder| %>
-        
-         <%= builder.label :purpose %>
-         <%= builder.text_area :purpose ,class:"form-control" %>
-
-        <%= builder.text_field :status ,class:"form-control" ,value: "0",hidden:"true" %>
+     
+        <%= form.fields_for  :mettings do |builder| %>
+           
+        <%= builder.label :purpose %>
+        <%= builder.text_area :purpose ,class:"form-control" ,required:"true"%>
         <br>
-        <%= builder.label :user_id ,"Employee",class:"mr-2"%> : 
-        <% options = options_from_collection_for_select(User.all, 'id', 'name',class:"form-control")%>
-        <%= builder.select :user_id,  options %>
+
+          <% if @user.role.id == 3 %>
+          <%= builder.label :user_id ,"Employee",class:"mr-2"%> :   
+          <% options = options_from_collection_for_select(User.all, 'id', 'name')%>
+          <%= builder.select :user_id,  options ,class:"form-control",required:"true"%>
+          <%= builder.text_field :reschedule ,class:"form-control" ,required:"true",value:Time.now.to_time.strftime('%B %e at %l:%M %p'),hidden:"true"  %>
+          <%= builder.text_field :status ,class:"form-control" ,value: "0",hidden:"true" %>
+
+          <% else %>
+          <%= builder.text_field:user_id, value:@user.name ,hidden:"true"%>
+        <%= builder.text_field :status ,class:"form-control" ,value: "4",hidden:"true" %>
+
+          Time: <%= builder.datetime_field :reschedule ,required:"true"  %>
+
+          <% end %>
        <% end %>
+      
      </div>
   
     <div class="actions text-center">
-      <%= form.submit "SEND"%>
+      <%= form.submit "Add Meeting", class:"btn btn-success"%>
     </div>
   <% end %>
-  
+ 

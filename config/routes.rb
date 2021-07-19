@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     collection do
       get"home"
       get"ajaxshow"
+      
       get"showmeeting"
     end
   end
@@ -12,7 +13,13 @@ Rails.application.routes.draw do
     end
   end
   root"users#index"
-  resources :mettings
+
+  resources :mettings do 
+    collection do
+      get"notification"
+    end
+  end
+  
   resources :sessions, only: [:new, :create, :destroy]
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

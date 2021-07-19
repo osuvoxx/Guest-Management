@@ -14,7 +14,7 @@ body {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: rgba(226, 226, 226);
+  background-color: #28a745;
   overflow-x: hidden;
   padding-top: 30px;
   border-right: 3px solid black;
@@ -30,9 +30,10 @@ body {
 .sidenav a:hover {
   background-color: rgb(0, 0, 0);
   color:white;
-  margin-left: 12px;
+  margin-left: 8px;
   transition: 0.6s;
   transition-delay: 0.07s;
+  font-size:30px;
 }
 
 
@@ -45,29 +46,28 @@ body {
 .active a{
   background-color: black;
   color: white !important;
+  margin-left: 8px;
 }
 </style>
 </head>
 <body>
 
 <div class="sidenav wid-20">
-   <h2 class="mb-3 text-center"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Hi,<%= @user.name.to_s.split(" ")[0].capitalize%></h2>
+  
+   <h4 class="mb-3 text-center"><b>Guest Management</b></h4>
    
     <div class="<%= 'active' if @active=="home" %>" >
       <%= link_to home_users_path,class:"px-5 py-3 "  do%>
       <h5><i class="fa fa-home " aria-hidden="true"></i> HOME</h5>
       <% end %>
     </div>
-   
-      <% if @user.role.id == 3%>
-      <div class="<%= 'active' if @active=="meeting" %>" >
-      <%= link_to meeting_guests_path,class:"px-5 py-3" do%>
-        <h5><i class="fa fa-address-card-o" aria-hidden="true"></i> ADD MEETING</h5>
-      <% end %>
-    </div>
-    <%= link_to mettings_path,class:"px-5 py-3" do%>
-     <h5> <i class="fa fa-list" aria-hidden="true"></i> ALL MEETINGS </h5>
-      <% end %>
+    <div class="<%= 'active' if @active=="meeting" %>" >
+    <%= link_to meeting_guests_path,class:"px-5 py-3" do%>
+      <h5><i class="fa fa-address-card-o" aria-hidden="true"></i> ADD MEETING</h5>
+    <% end %>
+  </div>
+      <% if @user.role.id == 3 || @user.role.id == 1%>
+     
     <% else %>
     <div class="<%= 'active' if @active=="show" %>" >
       <%= link_to showmeeting_users_path ,class:"px-5 py-3" do%>
@@ -75,16 +75,27 @@ body {
       <% end %>
     </div>
     <% end %>
+    <div class="<%= 'active' if @active=="index" %>" >
     <% if @user.role.id == 1%>
     <%= link_to  users_path,method:"get",class:"px-5 py-3" do%>
       <h5><i class="fa fa-users" aria-hidden="true"></i> EMPLOYEES</h5>
     <% end %>
     <% end %>
+    </div>
+    <% if @user.role.id == 3 || @user.role.id == 1%>
+    <div class="<%= 'active' if @active=="all" %>" >
+    <%= link_to mettings_path,class:"px-5 py-3" do%>
+     <h5> <i class="fa fa-list" aria-hidden="true"></i> ALL MEETINGS </h5>
+      <% end %>
+      </div>
+      <% end %>
+    <div class="<%= 'active' if @active=="profile" %>" >
     <%= link_to user_path(@user.id),class:"px-5 py-3" do%>
       <h5><i class="fa fa-user" aria-hidden="true"></i> PROFILE</h5>
     <% end %>
+    </div>
 
-    <%= link_to  session_path(@user.id), method:"delete",class:"px-5 py-3" do %>
+    <%= link_to  session_path(@user.id), method:"delete",class:"px-5 py-3 " do %>
       <h5><i class="fa fa-power-off" aria-hidden="true"></i> SIGN OUT</h5>
     <% end %>
    
