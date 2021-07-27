@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def showmeeting
    @active = "show"
     @user = User.find_by(id: session[:user_id])   
-    @usermeet=@user.mettings.all.where(status: "0").order("created_at DESC")
+    @usermeet=@user.mettings.all.order("created_at DESC")
     # render json:{usermeet: @usermeet}
   end
 

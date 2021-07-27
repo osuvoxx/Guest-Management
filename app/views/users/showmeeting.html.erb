@@ -20,106 +20,106 @@
     
     <div class="container">
   <% @usermeet.each do |meet| %>
-  
-  <!-- <% if meet.status == "3" %>
-    <div class="container mt-3">
-      <div class="jumbotron jumbotron-fluid py-4" style="border:5px solid black;border-radius: 10px;">
-        <div class="container py-0">
       
-          <h1 class=""><%= meet.guest.name %></h1>
-          <p class="lead">
+        <% if meet.status == "4" %>
+          <div class="container mt-3">
+            <div class="jumbotron jumbotron-fluid py-4" style="border:5px solid black;border-radius: 10px;">
+              <div class="container py-0">
             
-            <div class="mx-3 ">
-              <h5><strong>Purpose:</strong>
-              <%= meet.purpose %></h5>
-            </div>
-        </div>
-      </div>
-    </div>
-  <% end %>       -->
-         
-  <% if meet.status == "0" %>
-  
-  <div class="container mt-3">
-    <div class="jumbotron jumbotron-fluid py-4" style="border:5px solid black;border-radius: 10px;">
-    <div class="container py-0">
-   
-      <h1 class=""><%= meet.guest.name %></h1>
-      <p class="lead">
-        
-        <div class="mx-3 ">
-          <h5><strong>Purpose:</strong>
-          <%= meet.purpose %></h5>
-        </div>
-         
-        
-        <div>  
-          <!-- Accept -->
-        <%= form_for meet,style:"float: left; padding: 5px;" do |form| %>
-        <%= form.hidden_field:status ,value:"1",style:"display:inline-block" %>
-        <%= form.submit "Accept",class:"btn btn-success",style:"float: left; margin-left: 28%;margin-right:30px" %>
-        <% end %>   
-        <!-- Reject -->
-        
-        <span> <button type="button" class="btn btn-danger mx-4" data-toggle="modal" data-target="#exampleModal1">Reject</button></span>
-        <span> <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#exampleModal">Reschedule</button></span>
-    
- 
-        </div>
-        <!-- Reschedule Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Reschedule</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                <h1 class=""><%= meet.guest.name %></h1>
+                <p class="lead">
+                  
+                  <div class="mx-3 ">
+                    <h5><strong>Purpose:</strong>
+                    <%= meet.purpose %></h5>
+                    <h5>Prescheduled at :- <%= meet.reschedule.to_time.strftime('%B %e at %l:%M %p') %></h5>
+                  </div>
               </div>
-              <div class="modal-body">
-                <%= form_for meet do |form| %>
-                <%= form.datetime_field :reschedule, class:"form-control" ,:required => true %>
-                <br>
-                <%= form.text_field:reason , required:"true" ,placeholder:"reason" ,class:"form-control" %>
-                
-                <%= form.text_field :status ,value:"3",hidden:"true", :required => true  %>
-                <br>
-                <div class="text-center">
-                <%= form.submit "Reschedule", class:"btn btn-primary ml-4"%>
+            </div>
+          </div>
+
+        <% end %>      
+              
+        <% if meet.status == "0" %>
+        
+        <div class="container mt-3">
+          <div class="jumbotron jumbotron-fluid py-4" style="border:5px solid black;border-radius: 10px;">
+          <div class="container py-0">
+        
+            <h1 class=""><%= meet.guest.name %></h1>
+            <p class="lead">
+              
+              <div class="mx-3 ">
+                <h5><strong>Purpose:</strong>
+                <%= meet.purpose %></h5>
+              </div>
+              
+              
+              <div>  
+                <!-- Accept -->
+              <%= form_for meet,style:"float: left; padding: 5px;" do |form| %>
+              <%= form.hidden_field:status ,value:"1",style:"display:inline-block" %>
+              <%= form.submit "Accept",class:"btn btn-success",style:"float: left; margin-left: 28%;margin-right:30px" %>
+              <% end %>   
+              <!-- Reject -->
+              
+              <span> <button type="button" class="btn btn-danger mx-4" data-toggle="modal" data-target="#exampleModal1">Reject</button></span>
+              <span> <button type="button" class="btn btn-primary mx-4" data-toggle="modal" data-target="#exampleModal">Reschedule</button></span>
+          
+      
+              </div>
+              <!-- Reschedule Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Reschedule</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <%= form_for meet do |form| %>
+                      <%= form.datetime_field :reschedule, class:"form-control" ,:required => true %>
+                      <br>
+                      <%= form.text_field:reason , required:"true" ,placeholder:"reason" ,class:"form-control" %>
+                      
+                      <%= form.text_field :status ,value:"3",hidden:"true", :required => true  %>
+                      <br>
+                      <div class="text-center">
+                      <%= form.submit "Reschedule", class:"btn btn-primary ml-4"%>
+                      </div>
+                      <% end %>
+                    </div>
+                  </div>
                 </div>
-                <% end %>
+              </div>
+              <!-- Reject Modal2 -->
+              <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel1">Reject</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <%= form_for meet ,style:"" do |form| %>
+                      <%= form.hidden_field:status ,value:"2" %>
+                      <%= form.text_field:reason , required:"true" ,placeholder:"reason"%>
+                      <%= form.submit "Reject",class:"btn btn-danger" %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <!-- Reject Modal2 -->
-        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1">Reject</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <%= form_for meet ,style:"" do |form| %>
-                <%= form.hidden_field:status ,value:"2" %>
-                <%= form.text_field:reason , required:"true" ,placeholder:"reason"%>
-                <%= form.submit "Reject",class:"btn btn-danger" %>
-                <% end %>
-              </div>
-            </div>
-          </div>
+          </p>
         </div>
       </div>
-    </p>
-  </div>
-</div>
-<% else %>
-<h1></h1>
-  
-  <% end %>
+     
+        <% end %>
 <% end %>
       
 </div>
